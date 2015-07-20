@@ -1,0 +1,17 @@
+{
+  "verbose": false,
+  "delay": "0.1",
+  "ext": "js",
+  "events": {
+    "restart": ""
+  },
+  "execMap": {
+    "js": "node --harmony"
+  },
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "watch": [
+    "./"
+  ]
+}
