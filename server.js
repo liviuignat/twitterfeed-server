@@ -5,7 +5,7 @@ var route = require('koa-route');
 var cors = require('koa-cors');
 var config = require('config').config;
 var Twitter = require('twitter');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 4000;
 var app = koa();
 
 app.use(cors());
@@ -35,11 +35,14 @@ function * getTwitterFeeds(name, count) {
 }
 
 app.use(route.get('/feed', function * () {
+  var feedCount = parseInt(this.request.query.count) || 30;
+  var userNames = (this.request.query.user_names || 'AppDirect,laughingsquid,techcrunch').split(',');
+
   var feeds = [];
   try {
-    feeds = feeds.concat(yield getTwitterFeeds('AppDirect'));
-    feeds = feeds.concat(yield getTwitterFeeds('laughingsquid'));
-    feeds = feeds.concat(yield getTwitterFeeds('techcrunch'));
+    for (var counter = 0 ; counter < userNames.length; counter++) {
+      feeds = feeds.concat(yield getTwitterFeeds(userNames[counter], feedCount));
+    };
   } catch (err) {
     if (err && err.statusCode) {
       this.throw(err.body, err.statusCode);
