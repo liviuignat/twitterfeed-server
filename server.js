@@ -28,6 +28,8 @@ function * getTwitterFeeds(name, count) {
     if (!error) {
       if(tweets && tweets.map) {
         var formattedTweets = tweets.map(function (tweet) {
+
+          /* IE does not support the date format provided by twitter, so passing it in ISO 8601 formatted date. */
           tweet.created_at_formatted = new Date(tweet.created_at);
           return tweet;
         });
