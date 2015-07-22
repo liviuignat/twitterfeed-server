@@ -26,7 +26,13 @@ function * getTwitterFeeds(name, count) {
 
   client.get('statuses/user_timeline', params, function(error, tweets, response) {
     if (!error) {
-      deferred.resolve(tweets)
+      if(tweets && tweets.map) {
+        var formattedTweets = tweets.map(function (tweet) {
+          tweet.created_at_formatted = new Date(tweet.created_at);
+          return tweet;
+        });
+      }
+      deferred.resolve(formattedTweets)
     }
     deferred.reject(error);
   });
